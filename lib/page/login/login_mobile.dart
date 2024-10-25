@@ -26,10 +26,15 @@ class _LoginMobileState extends State<LoginMobile> {
 
     if (!result) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.red.withOpacity(0.8),
-          content: Text("Invalid password or username", style: mobile.body2),
+          backgroundColor: AppColor.danger.withOpacity(0.8),
+          content: Text("Invalid password or username!", style: mobile.body2),
           duration: const Duration(seconds: 1)));
     }
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: AppColor.primary.withOpacity(0.8),
+        content: Text("Login successfully!", style: mobile.body2),
+        duration: const Duration(seconds: 1)));
 
     return result;
   }
@@ -59,7 +64,7 @@ class _LoginMobileState extends State<LoginMobile> {
                 ),
                 BorderTextField(
                   controller: _passwordController,
-                  obscureText: showPassword,
+                  obscureText: !showPassword,
                   inputDecoration: InputDecoration(
                     suffixIcon: IconButton(
                       onPressed: () {
@@ -67,7 +72,17 @@ class _LoginMobileState extends State<LoginMobile> {
                           showPassword = !showPassword;
                         });
                       },
-                      icon: const Icon(Icons.visibility),
+                      icon: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 1000),
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                              opacity: animation, child: child);
+                        },
+                        child: showPassword
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off),
+                      ),
                     ),
                   ),
                 ),
