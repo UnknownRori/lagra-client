@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lagra_client/components/text_field.dart';
+import 'package:lagra_client/page/home/home.dart';
 import 'package:lagra_client/providers/authentication.dart';
+import 'package:lagra_client/utils/page_animation.dart';
 import 'package:lagra_client/utils/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +26,10 @@ class _LoginMobileState extends State<LoginMobile> {
         .read<AuthenticationProvider>()
         .Authenticate(username, password);
 
+    if (!context.mounted) {
+      return false;
+    }
+
     if (!result) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: AppColor.danger.withOpacity(0.8),
@@ -35,6 +41,8 @@ class _LoginMobileState extends State<LoginMobile> {
         backgroundColor: AppColor.primary.withOpacity(0.8),
         content: Text("Login successfully!", style: mobile.body2),
         duration: const Duration(seconds: 1)));
+
+    changePageAnimationAndForgot(context, const Home());
 
     return result;
   }
@@ -58,6 +66,9 @@ class _LoginMobileState extends State<LoginMobile> {
                   height: 26,
                 ),
                 Text("Login", style: mobile.subtitle2),
+                const SizedBox(
+                  height: 16,
+                ),
                 BorderTextField(controller: _usernameController),
                 const SizedBox(
                   height: 16,

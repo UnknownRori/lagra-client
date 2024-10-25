@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class HomeMobile extends StatefulWidget {
+  const HomeMobile({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _HomeMobileState createState() => _HomeMobileState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _HomeMobileState extends State<HomeMobile> {
   @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        body: Text("Login"),
-      );
-    }
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Text("Login"),
+    );
+  }
 }
