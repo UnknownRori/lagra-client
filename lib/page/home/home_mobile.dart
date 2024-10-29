@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lagra_client/components/text_field.dart';
+import 'package:lagra_client/env.dart';
 import 'package:lagra_client/models/item.dart';
 import 'package:lagra_client/providers/http_client.dart';
 import 'package:lagra_client/providers/item_providers.dart';
+import 'package:lagra_client/utils/theme.dart';
 import 'package:provider/provider.dart';
 
 class HomeMobile extends StatefulWidget {
@@ -25,10 +28,19 @@ class _HomeMobileState extends State<HomeMobile> {
   }
 
   @override
+  initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      HttpClient client = context.read<HttpClient>();
+      ItemProviders item_providers = context.read<ItemProviders>();
+      fetchItem(client, item_providers);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    HttpClient client = context.read<HttpClient>();
-    ItemProviders item_providers = context.read<ItemProviders>();
-    fetchItem(client, item_providers);
+    final NumberFormat formatter =
+        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp. ');
 
     return Scaffold(
       appBar: PreferredSize(
@@ -51,7 +63,30 @@ class _HomeMobileState extends State<HomeMobile> {
         ),
       ),
       body: SafeArea(
-        child: const Text("Yo"),
+        child: Column(
+          children: [
+            Text("Lagra Flashsale", style: mobile.subtitle2),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _items.take(3).map((item) {
+                var api = Environment.API_URL;
+                var storage = item.img;
+                var url = "https://$api/$storage";
+
+                return Column(
+                  children: [
+                    Image.network(
+                      url,
+                      height: 150,
+                    ),
+                    Text(item.name),
+                    Text(formatter.format(item.price)),
+                  ],
+                );
+              }).toList(),
+            )
+          ],
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         padding: const EdgeInsets.all(0),

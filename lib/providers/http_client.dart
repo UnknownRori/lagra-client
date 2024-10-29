@@ -8,13 +8,14 @@ class HttpClient with ChangeNotifier {
   http.Client client = http.Client();
   String token = "";
 
-  Future<Map> get(String uri) async {
+  Future<Map<String, dynamic>> get(String uri) async {
     var url = Uri.https(Environment.API_URL, uri);
     final response = await client.get(url, headers: {
       "Authorization": "Bearer $token",
       "content-type": "application/json",
     });
-    var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+    var decodedResponse =
+        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
     return decodedResponse;
   }
 
