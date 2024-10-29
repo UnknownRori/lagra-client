@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lagra_client/components/text_field.dart';
 import 'package:lagra_client/page/home/home.dart';
 import 'package:lagra_client/providers/authentication.dart';
+import 'package:lagra_client/providers/http_client.dart';
 import 'package:lagra_client/utils/page_animation.dart';
 import 'package:lagra_client/utils/theme.dart';
 import 'package:provider/provider.dart';
@@ -22,9 +23,10 @@ class _LoginMobileState extends State<LoginMobile> {
     String username = _usernameController.text;
     String password = _usernameController.text;
 
+    HttpClient client = context.read<HttpClient>();
     bool result = await context
         .read<AuthenticationProvider>()
-        .Authenticate(username, password);
+        .authenticate(client, username, password);
 
     if (!context.mounted) {
       return false;

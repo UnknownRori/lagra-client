@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lagra_client/components/text_field.dart';
+import 'package:lagra_client/models/item.dart';
+import 'package:lagra_client/providers/http_client.dart';
+import 'package:lagra_client/providers/item_providers.dart';
 import 'package:provider/provider.dart';
 
 class HomeMobile extends StatefulWidget {
@@ -12,9 +15,21 @@ class HomeMobile extends StatefulWidget {
 class _HomeMobileState extends State<HomeMobile> {
   int _currentIndex = 0;
   TextEditingController _searchController = TextEditingController();
+  List<Item> _items = [];
+
+  void fetchItem(HttpClient client, ItemProviders provider) async {
+    var item = await provider.fetch(client);
+    setState(() {
+      _items = item;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    HttpClient client = context.read<HttpClient>();
+    ItemProviders item_providers = context.read<ItemProviders>();
+    fetchItem(client, item_providers);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
