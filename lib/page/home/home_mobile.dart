@@ -3,8 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:lagra_client/components/text_field.dart';
 import 'package:lagra_client/env.dart';
 import 'package:lagra_client/models/item.dart';
+import 'package:lagra_client/page/item/item_page.dart';
 import 'package:lagra_client/providers/http_client.dart';
 import 'package:lagra_client/providers/item_providers.dart';
+import 'package:lagra_client/utils/page_animation.dart';
+import 'package:lagra_client/utils/storage.dart';
 import 'package:lagra_client/utils/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -71,12 +74,12 @@ class _HomeMobileState extends State<HomeMobile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: _items.take(3).map((item) {
-                var api = Environment.API_URL;
-                var storage = item.img;
-                var url = "https://$api/$storage";
+                var url = Storage.resolve(item.img);
 
                 return InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    changePageAnimation(context, ItemPage(item: item));
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(18),
                     child: Column(
