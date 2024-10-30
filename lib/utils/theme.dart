@@ -21,7 +21,6 @@ class Theme {
 
   final EdgeInsets pagePadding;
 
-
   const Theme({
     required this.title,
     required this.subtitle,
@@ -39,14 +38,13 @@ const Theme mobile = Theme(
       fontSize: 57, fontWeight: FontWeight.bold, fontFamily: 'poppins'),
   subtitle: TextStyle(
       fontSize: 36, fontWeight: FontWeight.bold, fontFamily: 'poppins'),
-  subtitle2: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'poppins'),
+  subtitle2: TextStyle(
+      fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'poppins'),
   body1: TextStyle(
       fontSize: 16, fontFamily: 'poppins', fontWeight: FontWeight.bold),
-  body2: TextStyle(
-      fontSize: 16, fontFamily: 'poppins'),
+  body2: TextStyle(fontSize: 16, fontFamily: 'poppins'),
   smallsub1: TextStyle(
       fontSize: 12, fontFamily: 'poppins', fontWeight: FontWeight.bold),
-  smallsub2:
-      TextStyle(fontSize: 12, fontFamily: 'poppins'),
+  smallsub2: TextStyle(fontSize: 12, fontFamily: 'poppins'),
   pagePadding: EdgeInsets.only(left: 16, right: 16, top: 24, bottom: 24),
 );

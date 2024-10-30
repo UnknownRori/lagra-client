@@ -5,6 +5,7 @@ import 'package:lagra_client/env.dart';
 import 'package:lagra_client/models/item.dart';
 import 'package:lagra_client/providers/http_client.dart';
 import 'package:lagra_client/providers/item_providers.dart';
+import 'package:lagra_client/providers/transaction.dart';
 import 'package:lagra_client/utils/storage.dart';
 import 'package:lagra_client/utils/theme.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +22,36 @@ class ItemMobile extends StatefulWidget {
 class _ItemMobileState extends State<ItemMobile> {
   int amount = 0;
 
+  void tambahKeranjang(HttpClient client, TransactionProvider provider,
+      BuildContext context) async {
+    var result =
+        await provider.tambahKeranjang(client, widget.item.uuid, amount);
+    Future.delayed(Duration.zero, () {
+      if (result) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: AppColor.primary,
+            duration: const Duration(seconds: 1),
+            content: const Text("Keranjang berhasil ditambah"),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: AppColor.danger,
+            duration: const Duration(seconds: 1),
+            content: const Text("Keranjang gagal ditambah"),
+          ),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    var client = context.read<HttpClient>();
+    var transaction = context.read<TransactionProvider>();
+
     return Scaffold(
       appBar: AppBar(
         elevation: 4,
@@ -96,6 +125,18 @@ class _ItemMobileState extends State<ItemMobile> {
                   ),
                 ),
               ],
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                tambahKeranjang(client, transaction, context);
+              },
+              child: Text(
+                "Masukan Keranjang",
+                style: mobile.body1,
+              ),
             ),
           ),
         ],

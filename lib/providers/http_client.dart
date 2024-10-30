@@ -19,14 +19,15 @@ class HttpClient with ChangeNotifier {
     return decodedResponse;
   }
 
-  Future<Map> post(Object? value, String uri) async {
+  Future<Map<String, dynamic>> post(Object? value, String uri) async {
     var body = json.encode(value);
     var url = Uri.https(Environment.API_URL, uri);
     final response = await client.post(url, body: body, headers: {
       "Authorization": "Bearer $token",
       "content-type": "application/json",
     });
-    var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+    var decodedResponse =
+        jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
     return decodedResponse;
   }
 }
