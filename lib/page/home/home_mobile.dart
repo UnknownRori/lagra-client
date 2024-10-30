@@ -7,6 +7,7 @@ import 'package:lagra_client/providers/http_client.dart';
 import 'package:lagra_client/providers/item_providers.dart';
 import 'package:lagra_client/utils/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeMobile extends StatefulWidget {
   const HomeMobile({super.key});
@@ -49,15 +50,16 @@ class _HomeMobileState extends State<HomeMobile> {
           title: BorderTextField(
             controller: _searchController,
             inputDecoration: const InputDecoration(
+              prefixIcon: Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(500)),
               ),
             ),
           ),
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.shopping_cart)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
           ],
           elevation: 4,
         ),
@@ -73,15 +75,18 @@ class _HomeMobileState extends State<HomeMobile> {
                 var storage = item.img;
                 var url = "https://$api/$storage";
 
-                return Column(
-                  children: [
-                    Image.network(
-                      url,
-                      height: 150,
+                return InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      children: [
+                        CachedNetworkImage(imageUrl: url, scale: 2),
+                        Text(item.name),
+                        Text(formatter.format(item.price)),
+                      ],
                     ),
-                    Text(item.name),
-                    Text(formatter.format(item.price)),
-                  ],
+                  ),
                 );
               }).toList(),
             )
