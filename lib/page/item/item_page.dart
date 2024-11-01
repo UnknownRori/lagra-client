@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lagra_client/models/item.dart';
-import 'package:lagra_client/page/home/home_mobile.dart';
 import 'package:lagra_client/page/item/item_mobile.dart';
 
 class ItemPage extends StatelessWidget {

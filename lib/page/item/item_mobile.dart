@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:lagra_client/components/text_field.dart';
-import 'package:lagra_client/env.dart';
 import 'package:lagra_client/models/item.dart';
 import 'package:lagra_client/providers/http_client.dart';
-import 'package:lagra_client/providers/item_providers.dart';
 import 'package:lagra_client/providers/transaction.dart';
 import 'package:lagra_client/utils/storage.dart';
 import 'package:lagra_client/utils/theme.dart';
@@ -39,8 +35,8 @@ class _ItemMobileState extends State<ItemMobile> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: AppColor.danger,
-            duration: const Duration(seconds: 1),
-            content: const Text("Keranjang gagal ditambah"),
+            duration: Duration(seconds: 1),
+            content: Text("Keranjang gagal ditambah"),
           ),
         );
       }

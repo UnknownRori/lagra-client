@@ -20,8 +20,7 @@ class Item {
       name: json['name'],
       price: json['price'],
       img: json['img'],
-      category: Category.fromJson(
-          json['category']), // Assuming API response contains category details
+      category: Category.fromJson(json['category']),
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lagra_client/components/text_field.dart';
-import 'package:lagra_client/env.dart';
 import 'package:lagra_client/models/item.dart';
 import 'package:lagra_client/page/item/item_page.dart';
+import 'package:lagra_client/page/keranjang/keranjang_page.dart';
 import 'package:lagra_client/providers/http_client.dart';
 import 'package:lagra_client/providers/item_providers.dart';
 import 'package:lagra_client/utils/page_animation.dart';
@@ -35,6 +35,7 @@ class _HomeMobileState extends State<HomeMobile> {
   initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
+      if (!context.mounted) return;
       HttpClient client = context.read<HttpClient>();
       ItemProviders item_providers = context.read<ItemProviders>();
       fetchItem(client, item_providers);
@@ -60,7 +61,11 @@ class _HomeMobileState extends State<HomeMobile> {
             ),
           ),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
+            IconButton(
+                onPressed: () {
+                  changePageAnimation(context, const KeranjangPage());
+                },
+                icon: const Icon(Icons.shopping_cart)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
           ],
