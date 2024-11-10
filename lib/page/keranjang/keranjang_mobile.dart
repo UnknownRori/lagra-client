@@ -7,6 +7,8 @@ import 'package:lagra_client/utils/storage.dart';
 import 'package:lagra_client/utils/theme.dart';
 import 'package:provider/provider.dart';
 
+enum PaymentType { paypal, creditCard, bank }
+
 class KeranjangMobile extends StatefulWidget {
   const KeranjangMobile({super.key});
 
@@ -19,7 +21,6 @@ class _KeranjangMobileState extends State<KeranjangMobile> {
 
   void fetchItem(HttpClient client, TransactionProvider provider) async {
     var item = await provider.ambilKeranjang(client);
-    print(item);
     setState(() {
       _keranjang = item;
     });
