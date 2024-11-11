@@ -50,12 +50,12 @@ class _KeranjangMobileState extends State<KeranjangMobile> {
           duration: const Duration(seconds: 1)));
     }
 
+    fetchItem(client, transaction);
+
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: AppColor.primary.withOpacity(0.8),
         content: Text("Checkout berhasil!", style: mobile.body2),
         duration: const Duration(seconds: 1)));
-
-    fetchItem(client, transaction);
   }
 
   @override
@@ -71,6 +71,7 @@ class _KeranjangMobileState extends State<KeranjangMobile> {
             Navigator.pop(context);
           },
         ),
+        title: const Text("Keranjang"),
       ),
       body: SingleChildScrollView(
         child: Column(

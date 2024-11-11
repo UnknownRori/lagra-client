@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lagra_client/models/keranjang.dart';
+import 'package:lagra_client/models/transaction.dart';
 import 'package:lagra_client/providers/http_client.dart';
 
 enum PaymentType { paypal, creditCard, bank }
@@ -14,6 +15,19 @@ String paymentTypeToString(PaymentType type) {
       return "GOPAY";
     default:
       return "PAYPAL";
+  }
+}
+
+PaymentType stringToPaymentType(String type) {
+  switch (type) {
+    case "PAYPAL":
+      return PaymentType.paypal;
+    case "CREDIT":
+      return PaymentType.creditCard;
+    case "GOPAY":
+      return PaymentType.bank;
+    default:
+      return PaymentType.paypal;
   }
 }
 
@@ -49,5 +63,16 @@ class TransactionProvider with ChangeNotifier {
     }
 
     return true;
+  }
+
+  Future<List<Transaction>> ambilTransaksi(HttpClient client) async {
+    var response = await client.get("/api/v1/transactions");
+    List<dynamic> data = response["data"]["transactions"];
+    var result = data.map((data) => Transaction.fromJson(data)).toList();
+
+    if (response["status"] != "success") {
+      throw "Fail to fetch";
+    }
+    return result;
   }
 }

@@ -57,6 +57,7 @@ class _ItemMobileState extends State<ItemMobile> {
             Navigator.pop(context);
           },
         ),
+        title: const Text("Item"),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
