@@ -121,10 +121,13 @@ class _HomeMobileState extends State<HomeMobile> {
                 )
               ],
             ),
-            AnimatedOpacity(
-              opacity: _expandedHamburger ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 500),
-              child: HamburgerExpanded(closeHamburger: closeHamburger),
+            IgnorePointer(
+              ignoring: !_expandedHamburger,
+              child: AnimatedOpacity(
+                opacity: _expandedHamburger ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 500),
+                child: HamburgerExpanded(closeHamburger: closeHamburger),
+              ),
             ),
           ],
         ),
