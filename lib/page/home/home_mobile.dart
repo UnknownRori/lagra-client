@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lagra_client/components/hamburger_expanded.dart';
 import 'package:lagra_client/components/text_field.dart';
 import 'package:lagra_client/models/item.dart';
 import 'package:lagra_client/page/item/item_page.dart';
@@ -21,6 +22,7 @@ class HomeMobile extends StatefulWidget {
 
 class _HomeMobileState extends State<HomeMobile> {
   int _currentIndex = 0;
+  bool _expandedHamburger = false;
   TextEditingController _searchController = TextEditingController();
   List<Item> _items = [];
 
@@ -67,37 +69,52 @@ class _HomeMobileState extends State<HomeMobile> {
                 },
                 icon: const Icon(Icons.shopping_cart)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    _expandedHamburger = !_expandedHamburger;
+                  });
+                },
+                icon: const Icon(Icons.menu)),
           ],
           elevation: 4,
         ),
       ),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Text("Lagra Flashsale", style: mobile.subtitle2),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: _items.take(3).map((item) {
-                var url = Storage.resolve(item.img);
+            Column(
+              children: [
+                Text("Lagra Flashsale", style: mobile.subtitle2),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: _items.take(3).map((item) {
+                    var url = Storage.resolve(item.img);
 
-                return InkWell(
-                  onTap: () {
-                    changePageAnimation(context, ItemPage(item: item));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: Column(
-                      children: [
-                        CachedNetworkImage(imageUrl: url, scale: 2),
-                        Text(item.name),
-                        Text(formatter.format(item.price)),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
-            )
+                    return InkWell(
+                      onTap: () {
+                        changePageAnimation(context, ItemPage(item: item));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(18),
+                        child: Column(
+                          children: [
+                            CachedNetworkImage(imageUrl: url, scale: 2),
+                            Text(item.name),
+                            Text(formatter.format(item.price)),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                )
+              ],
+            ),
+            AnimatedOpacity(
+              opacity: _expandedHamburger ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 500),
+              child: const HamburgerExpanded(),
+            ),
           ],
         ),
       ),
