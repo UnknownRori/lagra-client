@@ -1,9 +1,21 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:lagra_client/models/item.dart';
 import 'package:lagra_client/models/keranjang.dart';
 import 'package:lagra_client/providers/http_client.dart';
+
+enum PaymentType { paypal, creditCard, bank }
+
+String paymentTypeToString(PaymentType type) {
+  switch (type) {
+    case PaymentType.paypal:
+      return "PAYPAL";
+    case PaymentType.creditCard:
+      return "CREDIT";
+    case PaymentType.bank:
+      return "GOPAY";
+    default:
+      return "PAYPAL";
+  }
+}
 
 class TransactionProvider with ChangeNotifier {
   Future<bool> tambahKeranjang(
@@ -28,9 +40,9 @@ class TransactionProvider with ChangeNotifier {
     return result;
   }
 
-  Future<bool> checkout(HttpClient client) async {
+  Future<bool> checkout(HttpClient client, PaymentType payType) async {
     var response = await client.post({
-      "payType": "GOPAY",
+      "payType": paymentTypeToString(payType),
     }, "/api/v1/transactions");
     if (response["status"] != "success") {
       throw "Fail to checkout";

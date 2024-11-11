@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lagra_client/models/keranjang.dart';
 import 'package:lagra_client/providers/http_client.dart';
 import 'package:lagra_client/providers/transaction.dart';
 import 'package:lagra_client/utils/storage.dart';
 import 'package:lagra_client/utils/theme.dart';
 import 'package:provider/provider.dart';
-
-enum PaymentType { paypal, creditCard, bank }
 
 class KeranjangMobile extends StatefulWidget {
   const KeranjangMobile({super.key});
@@ -18,6 +17,7 @@ class KeranjangMobile extends StatefulWidget {
 
 class _KeranjangMobileState extends State<KeranjangMobile> {
   List<Keranjang> _keranjang = [];
+  PaymentType _currentSelectedPayment = PaymentType.paypal;
 
   void fetchItem(HttpClient client, TransactionProvider provider) async {
     var item = await provider.ambilKeranjang(client);
@@ -39,7 +39,7 @@ class _KeranjangMobileState extends State<KeranjangMobile> {
   }
 
   void checkout(HttpClient client, TransactionProvider transaction) async {
-    var result = await transaction.checkout(client);
+    var result = await transaction.checkout(client, _currentSelectedPayment);
 
     if (!context.mounted) return;
 
@@ -107,11 +107,177 @@ class _KeranjangMobileState extends State<KeranjangMobile> {
               if (_keranjang.isNotEmpty) {
                 return SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        checkout(client, transaction);
-                      },
-                      child: Text("Checkout", style: mobile.body1)),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 1000),
+                                transitionBuilder: (Widget child,
+                                    Animation<double> animation) {
+                                  return FadeTransition(
+                                      opacity: animation, child: child);
+                                },
+                                child: _currentSelectedPayment ==
+                                        PaymentType.paypal
+                                    ? OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          side: const BorderSide(
+                                              color: AppColor.primary,
+                                              width: 2.0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          padding: const EdgeInsets.all(8),
+                                        ),
+                                        onPressed: () {},
+                                        child: SvgPicture.asset(
+                                          "assets/images/paypal.svg",
+                                          colorFilter: const ColorFilter.mode(
+                                              AppColor.primary,
+                                              BlendMode.srcIn),
+                                        ),
+                                      )
+                                    : OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          side: const BorderSide(
+                                              color: AppColor.mainText,
+                                              width: 2.0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          padding: const EdgeInsets.all(8),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _currentSelectedPayment =
+                                                PaymentType.paypal;
+                                          });
+                                        },
+                                        child: SvgPicture.asset(
+                                          "assets/images/paypal.svg",
+                                          colorFilter: const ColorFilter.mode(
+                                              AppColor.mainText,
+                                              BlendMode.srcIn),
+                                        ),
+                                      )),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 1000),
+                              transitionBuilder:
+                                  (Widget child, Animation<double> animation) {
+                                return FadeTransition(
+                                    opacity: animation, child: child);
+                              },
+                              child: _currentSelectedPayment ==
+                                      PaymentType.creditCard
+                                  ? OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        side: const BorderSide(
+                                            color: AppColor.primary,
+                                            width: 2.0),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        padding: const EdgeInsets.all(8),
+                                      ),
+                                      onPressed: () {},
+                                      child: const Icon(
+                                        Icons.credit_card,
+                                        color: AppColor.primary,
+                                      ))
+                                  : OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        side: const BorderSide(
+                                            color: AppColor.mainText,
+                                            width: 2.0),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        padding: const EdgeInsets.all(8),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _currentSelectedPayment =
+                                              PaymentType.creditCard;
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.credit_card,
+                                        color: AppColor.mainText,
+                                      )),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 1000),
+                              transitionBuilder:
+                                  (Widget child, Animation<double> animation) {
+                                return FadeTransition(
+                                    opacity: animation, child: child);
+                              },
+                              child: _currentSelectedPayment == PaymentType.bank
+                                  ? OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        side: const BorderSide(
+                                            color: AppColor.primary,
+                                            width: 2.0),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        padding: const EdgeInsets.all(8),
+                                      ),
+                                      onPressed: () {},
+                                      child: const Icon(
+                                        Icons.account_balance,
+                                        color: AppColor.primary,
+                                      ))
+                                  : OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        side: const BorderSide(
+                                            color: AppColor.mainText,
+                                            width: 2.0),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        padding: const EdgeInsets.all(8),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _currentSelectedPayment =
+                                              PaymentType.bank;
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.account_balance,
+                                        color: AppColor.mainText,
+                                      )),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            checkout(client, transaction);
+                          },
+                          child: Text("Checkout", style: mobile.body1),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }
               return Center(
