@@ -33,6 +33,12 @@ class _HomeMobileState extends State<HomeMobile> {
     });
   }
 
+  void closeHamburger() {
+    setState(() {
+      _expandedHamburger = false;
+    });
+  }
+
   @override
   initState() {
     super.initState();
@@ -70,12 +76,17 @@ class _HomeMobileState extends State<HomeMobile> {
                 icon: const Icon(Icons.shopping_cart)),
             IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
             IconButton(
-                onPressed: () {
-                  setState(() {
-                    _expandedHamburger = !_expandedHamburger;
-                  });
-                },
-                icon: const Icon(Icons.menu)),
+              onPressed: () {
+                setState(() {
+                  _expandedHamburger = !_expandedHamburger;
+                });
+              },
+              icon: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  child: _expandedHamburger
+                      ? const Icon(Icons.close)
+                      : const Icon(Icons.menu)),
+            ),
           ],
           elevation: 4,
         ),
@@ -113,7 +124,7 @@ class _HomeMobileState extends State<HomeMobile> {
             AnimatedOpacity(
               opacity: _expandedHamburger ? 1.0 : 0.0,
               duration: const Duration(milliseconds: 500),
-              child: const HamburgerExpanded(),
+              child: HamburgerExpanded(closeHamburger: closeHamburger),
             ),
           ],
         ),

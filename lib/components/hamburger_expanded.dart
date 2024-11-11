@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lagra_client/page/login/login.dart';
+import 'package:lagra_client/page/riwayat_transaksi/riwayat_transaksi.dart';
+import 'package:lagra_client/utils/page_animation.dart';
 import 'package:lagra_client/utils/theme.dart';
 
 class HamburgerExpanded extends StatelessWidget {
-  const HamburgerExpanded({super.key});
+  void Function() closeHamburger;
+
+  HamburgerExpanded({super.key, required this.closeHamburger});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +20,10 @@ class HamburgerExpanded extends StatelessWidget {
           child: Column(
             children: [
               InkWell(
+                onTap: () {
+                  closeHamburger();
+                  changePageAnimation(context, const RiwayatTransaksi());
+                },
                 child: SizedBox(
                   width: double.infinity,
                   child: Row(
@@ -107,6 +116,10 @@ class HamburgerExpanded extends StatelessWidget {
                 height: 24,
               ),
               InkWell(
+                onTap: () {
+                  closeHamburger();
+                  changePageAnimationAndForgot(context, const Login());
+                },
                 child: SizedBox(
                   width: double.infinity,
                   child: Row(
