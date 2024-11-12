@@ -140,6 +140,7 @@ class _HomeMobileState extends State<HomeMobile> {
             child: BottomNavigationBar(
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
+          selectedItemColor: AppColor.primary,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
