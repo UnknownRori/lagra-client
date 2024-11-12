@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:lagra_client/models/item.dart';
 import 'package:lagra_client/providers/transaction.dart';
 
@@ -17,11 +19,27 @@ class Transaction {
   }
 }
 
+class TransactionItem {
+  String uuid;
+  int total;
+  Item item;
+
+  TransactionItem(
+      {required this.uuid, required this.total, required this.item});
+  factory TransactionItem.fromJson(Map<String, dynamic> json) {
+    return TransactionItem(
+      uuid: json['uuid'],
+      total: int.parse(json['total']),
+      item: Item.fromJson(json['item']),
+    );
+  }
+}
+
 class DetailTransaction {
   String uuid;
   int pay;
   PaymentType payType;
-  List<Item> item;
+  List<TransactionItem> item;
 
   DetailTransaction(
       {required this.uuid,
@@ -30,8 +48,8 @@ class DetailTransaction {
       required this.item});
 
   factory DetailTransaction.fromJson(Map<String, dynamic> json) {
-    var item =
-        json["transactionItem"].map((data) => Item.fromJson(data)).toList();
+    List<dynamic> transItem = json["transactionItem"];
+    var item = transItem.map((data) => TransactionItem.fromJson(data)).toList();
 
     return DetailTransaction(
       uuid: json['uuid'],

@@ -53,7 +53,8 @@ class RiwayatTransaksiMobile extends StatelessWidget {
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     var pay = formatter.format(data[index].pay);
-                    var uuid = data[index].uuid.substring(0, 8);
+                    var uuid = data[index].uuid;
+                    var uuidShort = uuid.substring(0, 8);
                     return Card(
                       child: InkWell(
                         borderRadius:
@@ -71,7 +72,7 @@ class RiwayatTransaksiMobile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("# Transaksi - $uuid",
+                              Text("# Transaksi - $uuidShort",
                                   style: mobile.subtitle2),
                               const SizedBox(height: 14),
                               Row(
