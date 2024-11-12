@@ -76,11 +76,11 @@ class TransactionProvider with ChangeNotifier {
     return result;
   }
 
-  Future<List<Transaction>> ambilDetailTransaksi(
+  Future<DetailTransaction> ambilDetailTransaksi(
       HttpClient client, String uuid) async {
     var response = await client.get("/api/v1/transactions/$uuid");
-    List<dynamic> data = response["transaction"]["transactions"];
-    var result = data.map((data) => Transaction.fromJson(data)).toList();
+    var data = response["data"]["transaction"];
+    var result = DetailTransaction.fromJson(data);
 
     if (response["status"] != "success") {
       throw "Fail to fetch";

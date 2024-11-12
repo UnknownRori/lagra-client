@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lagra_client/components/detail_transaksi.dart';
 import 'package:provider/provider.dart';
 
 import 'package:lagra_client/models/transaction.dart';
@@ -57,7 +58,13 @@ class RiwayatTransaksiMobile extends StatelessWidget {
                       child: InkWell(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(12)),
-                        onTap: () {},
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return DetailTransaksi(uuid: uuid);
+                              });
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(4),
                           child: Column(
